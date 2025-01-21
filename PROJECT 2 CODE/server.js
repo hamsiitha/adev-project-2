@@ -3,6 +3,7 @@ const multer = require('multer'); // Import multer for file uploads
 const path = require('path');
 const connection = require('./db-connection');
 const fs = require("fs");
+const { sendWelcomeEmail } = require('./email-service');
 
 const app = express();
 
@@ -272,6 +273,56 @@ app.post("/add_vendor", (req, res) => {
 
   })
 })
+
+// 订阅路由
+app.post('/subscribe', async (req, res) => {
+    const { email } = req.body;
+
+    if (!email) {
+        return res.status(400).json({ error: '邮箱地址是必需的' });
+    }
+
+    // 检查邮箱格式
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({ error: '邮箱格式不正确' });
+    }
+
+    try {
+        // 检查是否已订阅
+        const checkQuery = 'SELECT * FROM subscribers WHERE email = ?';
+        connection.query(checkQuery, [email], async (err, results) => {
+            if (err) {
+                console.error('Database error:', err);
+                return res.status(500).json({ error: '数据库错误' });
+            }
+
+            if (results.length > 0) {
+                return res.status(400).json({ error: '该邮箱已经订阅' });
+            }
+
+            // 添加新订阅者
+            const insertQuery = 'INSERT INTO subscribers (email) VALUES (?)';
+            connection.query(insertQuery, [email], async (err, result) => {
+                if (err) {
+                    console.error('Database error:', err);
+                    return res.status(500).json({ error: '数据库错误' });
+                }
+
+                // 发送欢迎邮件
+                const emailSent = await sendWelcomeEmail(email);
+                if (!emailSent) {
+                    return res.status(500).json({ error: '发送欢迎邮件失败' });
+                }
+
+                res.json({ message: '订阅成功！欢迎邮件已发送' });
+            });
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: '服务器错误' });
+    }
+});
 
 ///////////////
 // Start the server  

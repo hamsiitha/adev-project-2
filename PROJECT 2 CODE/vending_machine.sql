@@ -133,6 +133,16 @@ CREATE TABLE IF NOT EXISTS `vending_machine`.`vending_item` (
 ) ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `vending_machine`.`subscribers`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `vending_machine`.`subscribers` (
+  `subscriber_id` INT NOT NULL AUTO_INCREMENT,
+  `email` VARCHAR(255) NOT NULL UNIQUE,
+  `subscribed_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`subscriber_id`))
+ENGINE = InnoDB;
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

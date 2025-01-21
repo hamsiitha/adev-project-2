@@ -90,6 +90,108 @@
   </div>
   
 
+  <div class="subscription-section">
+    <div class="container">
+        <div class="subscription-form">
+            <h2>订阅我们的更新</h2>
+            <p>订阅以获取最新的产品信息和优惠通知！</p>
+            <form id="subscribeForm" onsubmit="handleSubscribe(event)">
+                <input type="email" id="emailInput" placeholder="请输入您的邮箱地址" required>
+                <button type="submit">订阅</button>
+            </form>
+        </div>
+    </div>
+  </div>
+
+  <style>
+  .subscription-section {
+    background-color: #f5f5f5;
+    padding: 40px 0;
+    margin-top: 40px;
+  }
+
+  .subscription-form {
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .subscription-form h2 {
+    color: #333;
+    margin-bottom: 15px;
+  }
+
+  .subscription-form p {
+    color: #666;
+    margin-bottom: 20px;
+  }
+
+  #subscribeForm {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  #emailInput {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 300px;
+    font-size: 16px;
+  }
+
+  #subscribeForm button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+
+  #subscribeForm button:hover {
+    background-color: #45a049;
+  }
+  </style>
+
   <script src="js/index.js"></script>
+  <script>
+  async function handleSubscribe(event) {
+    event.preventDefault();
+    const email = document.getElementById('emailInput').value;
+    const button = event.target.querySelector('button');
+    const originalText = button.textContent;
+    
+    try {
+      button.textContent = '提交中...';
+      button.disabled = true;
+      
+      const response = await fetch('/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email })
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        alert('订阅成功！欢迎邮件已发送到您的邮箱。');
+        document.getElementById('emailInput').value = '';
+      } else {
+        alert(data.error || '订阅失败，请稍后重试。');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('订阅失败，请稍后重试。');
+    } finally {
+      button.textContent = originalText;
+      button.disabled = false;
+    }
+  }
+  </script>
 </body>
 </html>
