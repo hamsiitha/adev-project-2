@@ -1,0 +1,158 @@
+/* Reset default styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f7f7f7;
+  color: #333;
+  text-align: center;
+  padding: 30px;
+  line-height: 1.6;
+}
+
+h1 {
+  font-size: 2.5em;
+  color: #333;
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+#search-bar {
+  width: 80%;
+  padding: 10px;
+  font-size: 1rem;
+  margin: 20px auto;
+  display: block;
+  border: 2px solid #6c5ce7;
+  border-radius: 5px;
+  outline: none;
+}
+
+#search-bar:focus {
+  border-color: #fd79a8;
+  box-shadow: 0 0 8px rgba(253, 121, 168, 0.5);
+}
+
+
+table {
+  width: 90%;
+  margin: 40px auto;
+  border-collapse: separate; /* Ensure border-collapse is set to separate */
+  border-spacing: 0; /* Remove spacing between cells */
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  overflow: hidden;
+}
+
+thead {
+  background-color: #6c5ce7;
+  color: #fff;
+  text-align: center;
+}
+
+th {
+  padding: 16px;
+  text-align: left;
+  font-size: 1.1em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background-color: #6c5ce7;
+  text-align: center;
+}
+
+th, td {
+  color: #333;
+}
+
+td {
+  padding: 15px;
+  font-size: 1.05em;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Apply rounded corners to the header cells */
+th:nth-child(7) {
+  border-top-right-radius: 8px; /* Top-right corner */
+}
+
+th:nth-child(6) {
+  border-top-left-radius: 8px; /* Top-left corner */
+}
+
+tbody tr {
+  background-color: #f9f9f9;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+tbody tr:hover {
+  background-color: #f1f1f1;
+  transform: scale(1.02);
+}
+
+tbody tr:nth-child(even) {
+  background-color: #fefefe;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #fafafa;
+}
+
+tbody tr td {
+  font-size: 1em;
+  padding: 12px 15px;
+}
+
+/* Add smooth gradient transition for header */
+@keyframes gradientBg {
+  0% {
+    background-color: #6c5ce7;
+  }
+  50% {
+    background-color: #fd79a8;
+  }
+  100% {
+    background-color: #6c5ce7;
+  }
+}
+
+thead {
+  animation: gradientBg 4s ease-in-out infinite;
+}
+
+/* Hover and focus effects for interactive elements */
+button {
+  background-color: #6c5ce7;
+  color: #fff;
+  padding: 12px 24px;
+  font-size: 1em;
+  font-weight: 600;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #fd79a8;
+  transform: translateY(-3px);
+}
+
+button:focus {
+  outline: none;
+  box-shadow: 0 0 10px rgba(108, 92, 231, 0.6);
+}
+
+/* Placeholder for table row template */
+template {
+  display: none;
+}

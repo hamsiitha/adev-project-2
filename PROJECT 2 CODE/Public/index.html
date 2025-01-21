@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vending Machines</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+  <div>
+    <input
+      type="text"
+      id="search-bar"
+      placeholder="Search school or by ID"
+      onkeyup="filterVendingMachines()"
+    />
+  </div>
+  
+  <h1>Vending Machines</h1>
+  <table id="vending-machines-table">
+    <thead>
+      <tr> 
+        <th>ID</th>
+        <th>School</th>
+        <th>Block</th>
+        <th>Floor</th>
+        <th>Vendor</th>
+        <th>Status</th>
+        <th>Payment Methods</th>
+      </tr> 
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <!-- Updated template for row with 6 columns -->
+  <template id="vending_machine_row">
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><button class="delete-btn">Delete</button></td>
+      <form id="delete-form" class="form">
+        <label for="delete-item-id">Item ID:</label>
+        <input type="number" id="delete-item-id" required>
+        <button type="submit" class="btn delete-btn">Delete</button>
+      </form>
+    </tr>
+  </template>
+
+
+
+  <!-- Form to Add New Vending Machine -->
+  <div id="vendor-form1">
+    <h2>Add New Vending Machine</h2>
+    <form id="vendor-form">
+      <label for="school">School:</label>
+      <select id="school" name="school" required>
+        <option value="">Select School</option>
+        <option value="Engine">Engine</option>
+        <option value="Design">Design</option>
+        <option value="Business">Business</option>
+        <option value="Applied Science">Applied Science</option>
+        <option value="Humanities & Social Sciences">Humanities & Social Sciences</option>
+        <option value="Informatics & IT">Informatics & IT</option>
+      </select>
+  
+      <label for="block">Block:</label>
+      <input type="text" id="block" name="block" required>
+  
+      <label for="floor">Floor:</label>
+      <input type="text" id="floor" name="floor" required>
+  
+      <label for="vendor">Vendor Name:</label>
+      <input type="text" id="vendor" name="vendor" required>
+  
+      <label for="status">Status:</label>
+      <select id="status" name="status" required>
+        <option value="">Select Status</option>
+        <option value="Available">Available</option>
+        <option value="Out of Service">Out of Service</option>
+      </select>
+      <button type="submit">Add Vending Machine</button>
+    </form>
+  </div>
+  
+
+  <script src="js/index.js"></script>
+</body>
+</html>

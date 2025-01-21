@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vending Machine Items</title>
+  <link rel="stylesheet" href="details.css">
+</head>
+<body>
+  <header class="header">
+    <h1>Vending Machine Items</h1>
+    <p class="subtitle">Manage your items seamlessly and in style</p>
+  </header>
+
+  <main class="main-content">
+    <!-- Items Grid Section -->
+    <section class="items-section">
+      <h2>Available Items</h2>
+      <div class="items-grid" id="items-grid">
+        <!-- Dynamic item cards will appear here -->
+      </div>
+    </section>
+
+    <!-- Form Section -->
+    <section class="form-section">
+      <h2>Add</h2>
+      <form id="item-form" class="form" enctype="multipart/form-data">
+        <input type="hidden" id="item-id">
+        
+        <label for="item-name">Name:</label>
+        <input type="text" id="item-name" name="item-name" required>
+        
+        <label for="item-cost">Cost ($):</label>
+        <input type="number" id="item-cost" name="item-cost" step="0.01" required>
+      
+        <label for="item-quantity">Quantity:</label>
+        <input type="number" id="item-quantity" name="item-quantity" required>
+      
+        <label for="item-availability">Availability:</label>
+        <select id="item-availability" required name="item-availability">
+          <option value="1">Available</option>
+          <option value="0">Out of Stock</option>
+        </select>
+      
+        <label for="item-image">Upload Image:</label>
+        <input type="file" id="item-image" accept="image/*" name="item-image" required>
+      
+        <button type="submit" class="btn">Submit</button>
+      </form>
+      
+
+      <h2>Delete Item</h2>
+      <form id="delete-form" class="form">
+        <label for="delete-item-id">Item ID:</label>
+        <input type="number" id="delete-item-id" required>
+        <button type="submit" class="btn delete-btn">Delete</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 Vending Machine Inc. Designed with 💖</p>
+  </footer>
+
+  <!-- Template for Item Cards -->
+  <template id="item-template">
+    <div class="item-card">
+      <img src="" alt="Item Image" class="item-image"> 
+      <!-- <div class="item-info"> -->
+        <h3 class="item-name"></h3>
+        <p class="item-id"></p> 
+        <p class="item-cost"></p>
+        <p class="item-quantity"></p>
+        <p class="availability"></p>
+     <!--  </div> -->
+    </div>
+  </template>
+
+  <script src="js/details.js"></script>
+</body>
+</html>
