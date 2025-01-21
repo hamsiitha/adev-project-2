@@ -7,6 +7,10 @@ const { sendWelcomeEmail } = require('./email-service');
 
 const app = express();
 
+// 添加 JSON 解析中间件
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use(express.static("Public"));
 app.use(express.json());
 app.use('/', express.static('uploads')); // Serve uploaded files
@@ -276,15 +280,19 @@ app.post("/add_vendor", (req, res) => {
 
 // 订阅路由
 app.post('/subscribe', async (req, res) => {
+    console.log('收到订阅请求:', req.body);
+
     const { email } = req.body;
 
     if (!email) {
+        console.log('缺少邮箱地址');
         return res.status(400).json({ error: '邮箱地址是必需的' });
     }
 
     // 检查邮箱格式
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
+        console.log('邮箱格式不正确:', email);
         return res.status(400).json({ error: '邮箱格式不正确' });
     }
 
@@ -293,11 +301,12 @@ app.post('/subscribe', async (req, res) => {
         const checkQuery = 'SELECT * FROM subscribers WHERE email = ?';
         connection.query(checkQuery, [email], async (err, results) => {
             if (err) {
-                console.error('Database error:', err);
-                return res.status(500).json({ error: '数据库错误' });
+                console.error('数据库查询错误:', err);
+                return res.status(500).json({ error: '数据库错误: ' + err.message });
             }
 
             if (results.length > 0) {
+                console.log('邮箱已存在:', email);
                 return res.status(400).json({ error: '该邮箱已经订阅' });
             }
 
@@ -305,22 +314,38 @@ app.post('/subscribe', async (req, res) => {
             const insertQuery = 'INSERT INTO subscribers (email) VALUES (?)';
             connection.query(insertQuery, [email], async (err, result) => {
                 if (err) {
-                    console.error('Database error:', err);
-                    return res.status(500).json({ error: '数据库错误' });
+                    console.error('数据库插入错误:', err);
+                    return res.status(500).json({ error: '数据库错误: ' + err.message });
                 }
+
+                console.log('订阅者添加成功，准备发送欢迎邮件');
 
                 // 发送欢迎邮件
-                const emailSent = await sendWelcomeEmail(email);
-                if (!emailSent) {
-                    return res.status(500).json({ error: '发送欢迎邮件失败' });
-                }
+                try {
+                    const emailSent = await sendWelcomeEmail(email);
+                    if (!emailSent) {
+                        console.error('发送欢迎邮件失败');
+                        // 即使邮件发送失败，我们仍然保留订阅记录
+                        return res.status(200).json({ 
+                            message: '订阅成功，但欢迎邮件发送失败，我们会稍后重试',
+                            warning: '欢迎邮件发送失败'
+                        });
+                    }
 
-                res.json({ message: '订阅成功！欢迎邮件已发送' });
+                    console.log('订阅流程完成');
+                    res.json({ message: '订阅成功！欢迎邮件已发送' });
+                } catch (emailError) {
+                    console.error('发送邮件时发生错误:', emailError);
+                    res.status(200).json({ 
+                        message: '订阅成功，但欢迎邮件发送失败，我们会稍后重试',
+                        warning: '欢迎邮件发送失败'
+                    });
+                }
             });
         });
     } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ error: '服务器错误' });
+        console.error('服务器错误:', error);
+        res.status(500).json({ error: '服务器错误: ' + error.message });
     }
 });
 
